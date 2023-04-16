@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: pihole
+spec:
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      containers:
+      - name: pihole
+        image: "{{ .Values.image }}:{{- .Chart.AppVersion -}}"
+{{/*        resources:*/}}
+{{/*          limits:*/}}
+{{/*            memory: "2048Mi"*/}}
+{{/*            cpu: "2000m"*/}}
+{{/*        ports:*/}}
+{{/*        - containerPort: 53*/}}
+{{/*          name: dns-tcp*/}}
+{{/*          protocol: TCP*/}}
+{{/*        - containerPort: 53*/}}
+{{/*          name: dns-udp*/}}
+{{/*          protocol: UDP*/}}
+{{/*        - containerPort: 80*/}}
+{{/*          name: http*/}}
+{{/*          protocol: TCP*/}}
+        envFrom:
+        - configMapRef:
+            name: pihole-config
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+        volumeMounts:
+         - name: pihole-local-etc-volume
+           mountPath: '/etc/pihole'
+         - name: pihole-local-dnsmasq-volume
+           mountPath: '/etc/dnsmasq.d'
+{{/*        livenessProbe:*/}}
+{{/*          httpGet:*/}}
+{{/*            path: /admin.index.php*/}}
+{{/*            port: 80*/}}
+{{/*          initialDelaySeconds: 200*/}}
+{{/*          periodSeconds: 20*/}}
+{{/*        readinessProbe:*/}}
+{{/*          httpGet:*/}}
+{{/*            path: /admin.index.php*/}}
+{{/*            port: 80*/}}
+{{/*          initialDelaySeconds: 200*/}}
+{{/*          periodSeconds: 20*/}}
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 9.9.9.9
+          - 1.1.1.1
+        searches:
+          - pihole.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+          - fritz.box
+        options:
+          - name: ndots
+            value: "2"
+      volumes:
+      - name: pihole-local-etc-volume
+        persistentVolumeClaim:
+          claimName: pihole-etc-pv-claim-helm
+      - name: pihole-local-dnsmasq-volume
+        persistentVolumeClaim:
+          claimName: pihole-dnsmasq-pv-claim-helm

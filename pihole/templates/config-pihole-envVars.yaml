@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-config
+  namespace: {{ .Values.namespace }}
+data:
+  FTLCONF_LOCAL_IPV4: 192.168.43.9
+  PIHOLE_DNS_: 1.1.1.1;9.9.9.10;2620:fe::fe:10;2606:4700:4700::1001
+  WEBPASSWORD: hunDekuchen
+  TZ: Europe/Amsterdam
