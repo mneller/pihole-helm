@@ -1,0 +1,19 @@
+{
+  "$schema" : "https://json-schema.org/draft/2020-12/schema",
+  "$id" : "example/0.1.0/aggregated-values.schema.json",
+  "x-generated-by" : "helm-values 0.5.1",
+  "x-generated-at" : "2023-03-26T18:34:12Z",
+  "title" : "Configuration for chart example:0.1.0",
+  "description" : "\n\\n",
+  "properties" : {
+    "global" : {
+      "additionalProperties" : false,
+      "allOf" : [ {
+        "title" : "Aggregated global values for chart example:0.1.0",
+        "description" : "\n\\n Aggregation of global values of chart and its dependencies: ",
+        "x-intellij-html-description" : "<br>Aggregation of global values of chart and its dependencies: <ul></ul>"
+      } ]
+    }
+  },
+  "additionalProperties" : false
+}

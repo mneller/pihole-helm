@@ -1,0 +1,17 @@
+{
+  "$schema" : "https://json-schema.org/draft/2020-12/schema",
+  "$id" : "https://default/pihole2/2.0.0/extra-values.schema.json",
+  "x-generated-by" : "helm-values 0.5.1",
+  "x-generated-at" : "2023-03-26T18:34:12Z",
+  "title" : "Extra configuration for packaged chart pihole2:2.0.0",
+  "description" : "\n\\n",
+  "properties" : {
+    "global" : {
+      "$ref" : "aggregated-values.schema.json#/properties/global"
+    },
+    "pihole2" : {
+      "$ref" : "aggregated-values.schema.json"
+    }
+  },
+  "additionalProperties" : false
+}
