@@ -17,20 +17,6 @@ spec:
       containers:
       - name: pihole
         image: "{{ .Values.image }}:{{- .Chart.AppVersion -}}"
-{{/*        resources:*/}}
-{{/*          limits:*/}}
-{{/*            memory: "2048Mi"*/}}
-{{/*            cpu: "2000m"*/}}
-{{/*        ports:*/}}
-{{/*        - containerPort: 53*/}}
-{{/*          name: dns-tcp*/}}
-{{/*          protocol: TCP*/}}
-{{/*        - containerPort: 53*/}}
-{{/*          name: dns-udp*/}}
-{{/*          protocol: UDP*/}}
-{{/*        - containerPort: 80*/}}
-{{/*          name: http*/}}
-{{/*          protocol: TCP*/}}
         envFrom:
         - configMapRef:
             name: pihole-config
@@ -43,18 +29,6 @@ spec:
            mountPath: '/etc/pihole'
          - name: pihole-local-dnsmasq-volume
            mountPath: '/etc/dnsmasq.d'
-{{/*        livenessProbe:*/}}
-{{/*          httpGet:*/}}
-{{/*            path: /admin.index.php*/}}
-{{/*            port: 80*/}}
-{{/*          initialDelaySeconds: 200*/}}
-{{/*          periodSeconds: 20*/}}
-{{/*        readinessProbe:*/}}
-{{/*          httpGet:*/}}
-{{/*            path: /admin.index.php*/}}
-{{/*            port: 80*/}}
-{{/*          initialDelaySeconds: 200*/}}
-{{/*          periodSeconds: 20*/}}
       dnsPolicy: "None"
       dnsConfig:
         nameservers:
@@ -71,7 +45,7 @@ spec:
       volumes:
       - name: pihole-local-etc-volume
         persistentVolumeClaim:
-          claimName: pihole-etc-pv-claim-helm
+          claimName: pvc-etc
       - name: pihole-local-dnsmasq-volume
         persistentVolumeClaim:
-          claimName: pihole-dnsmasq-pv-claim-helm
+          claimName: pvc-dnsmasq
