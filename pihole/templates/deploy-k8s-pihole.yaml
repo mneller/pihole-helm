@@ -14,9 +14,14 @@ spec:
       labels:
         app: pihole
     spec:
+      securityContext:
+{{/*        runAsUser: 1000*/}}
+{{/*        runAsGroup: 1000*/}}
+        fsGroup: 1000
       containers:
       - name: pihole
         image: "{{ .Values.image }}:{{- .Chart.AppVersion -}}"
+        imagePullPolicy: "IfNotPresent"
         envFrom:
         - configMapRef:
             name: pihole-config
@@ -24,6 +29,8 @@ spec:
           capabilities:
             add:
               - NET_ADMIN
+              - SYS_NICE
+              - CHOWN
         volumeMounts:
          - name: pihole-local-etc-volume
            mountPath: '/etc/pihole'
@@ -45,7 +52,7 @@ spec:
       volumes:
       - name: pihole-local-etc-volume
         persistentVolumeClaim:
-          claimName: pvc-etc
+          claimName: pvc-etc3
       - name: pihole-local-dnsmasq-volume
         persistentVolumeClaim:
-          claimName: pvc-dnsmasq
+          claimName: pvc-dnsmasq3
