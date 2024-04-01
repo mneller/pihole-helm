@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  pihole:
+  - apiVersion: v2
+    appVersion: 2024.03.1
+    created: "2024-04-01T18:16:52.678014482Z"
+    description: A Helm chart for Kubernetes
+    digest: 81a22d01c0c7a3f6bae90bdffd8229f21edd77b65126eee092747e34f329163d
+    name: pihole
+    type: application
+    urls:
+    - https://github.com/mneller/pihole-helm/releases/download/pihole-3.0.5/pihole-3.0.5.tgz
+    version: 3.0.5
+generated: "2024-04-01T18:16:52.678027667Z"
