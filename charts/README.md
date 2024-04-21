@@ -13,8 +13,22 @@ pihoel-helm` to see the charts.
 
 To install the pihole-helm chart:
 
-    helm install my-pihole-helm mneller/pihole-helm
+    helm install pihole mneller/pihole
 
 To uninstall the chart:
 
     helm delete my-pihole-helm
+
+##  Added 21.04.2024:
+I integrated a GitRunner to automatically generate a new helm chart after a pull
+
+You can upgrade the version with the following command
+
+>    helm repo update # Pull the new version from github
+> 
+>    helm repo update # Validate if the new version is there
+> 
+>    helm upgrade pihole mneller/pihole 
+> 
+>   helm list # Validate the installation
+    
