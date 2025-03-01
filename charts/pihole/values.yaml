@@ -4,4 +4,4 @@
 
 namespace: pihole-helm
 image: pihole/pihole
-shared_ip: 192.168.44.201
+shared_ip: 192.168.44.205
