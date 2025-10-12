@@ -4,12 +4,8 @@ metadata:
   name: pihole-config
   namespace: {{ .Values.namespace }}
 data:
-  FTLCONF_LOCAL_IPV4: "192.168.44.200"
+  FTLCONF_LOCAL_IPV4: "192.168.44.205"
+  FTLCONF_LOCAL_IPV6: "2001:8e0:2078:c400::205"
   PIHOLE_DNS_: "1.1.1.1;9.9.9.10;2620:fe::fe:10;2606:4700:4700::1001"
-  WEBPASSWORD: "hunDekuchen"
-  TZ: "Europe/Amsterdam"
-{{/*  DNSMASQ_USER: "root"*/}}
-{{/*  PIHOLE_UID: "1000"*/}}
-{{/*  PIHOLE_GID: "1000"*/}}
-{{/*  WEB_UID: "1000"*/}}
-{{/*  WEB_GID: "1000"*/}}
+  WEBPASSWORD: "hunDekuchen"          # besser als Secret
+  TZ: "Europe/Zurich"
