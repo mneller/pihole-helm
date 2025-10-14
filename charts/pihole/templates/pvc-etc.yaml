@@ -1,12 +1,13 @@
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: PersistentVolume
 metadata:
-  name: pvc-etc3
-  namespace: {{ .Values.namespace }}
+  name: pihole-etc-pv
 spec:
-  storageClassName: nfs-csi
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 4Gi
+  capacity:
+    storage: 2Gi
+  accessModes: ["ReadWriteMany"]
+  storageClassName: ""     # static PV
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 192.168.44.200
+    path: /srv/nfs/pvc-17ef0d80-a8c5-41e7-a865-8ef9325e07f6
