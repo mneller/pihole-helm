@@ -3,6 +3,16 @@ entries:
   pihole:
   - apiVersion: v2
     appVersion: 2024.07.0
+    created: "2025-10-15T20:07:42.910457436Z"
+    description: Helm chart including now ipv6 setup
+    digest: fdf85ce0340eb17b7c46533fea43c552d76b28fadfbba07ffd25b996133f2a07
+    name: pihole
+    type: application
+    urls:
+    - https://github.com/mneller/pihole-helm/releases/download/pihole-4.0.6/pihole-4.0.6.tgz
+    version: 4.0.6
+  - apiVersion: v2
+    appVersion: 2024.07.0
     created: "2025-10-15T20:04:44.774036013Z"
     description: Helm chart including now ipv6 setup
     digest: e204c7f346454f0f1dd19e75aeb1e9a49cd4b2c4df3a95c00f5ad386f10047a3
@@ -111,4 +121,4 @@ entries:
     urls:
     - https://github.com/mneller/pihole-helm/releases/download/pihole-3.0.5/pihole-3.0.5.tgz
     version: 3.0.5
-generated: "2025-10-15T20:04:44.774074445Z"
+generated: "2025-10-15T20:07:42.910516196Z"
