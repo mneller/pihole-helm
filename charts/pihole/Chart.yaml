@@ -3,4 +3,4 @@ appVersion: 2024.07.0
 description: Helm chart including now ipv6 setup
 name: pihole
 type: application
-version: 4.0.5
+version: 4.0.6
