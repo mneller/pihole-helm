@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "pihole.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "pihole.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: {{ include "pihole.fullname" . }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: {{ include "pihole.fullname" . }}
+    spec:
+      containers:
+        - name: pihole
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- range $k, $v := .Values.env }}
+            - name: {{ $k }}
+              value: "{{ $v }}"
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: dns
+              containerPort: 53
+              protocol: TCP
+            - name: dns-udp
+              containerPort: 53
+              protocol: UDP
+            - name: https
+              containerPort: 443
+              protocol: TCP
+            - name: client-udp
+              containerPort: 67
+              protocol: UDP
+          livenessProbe:
+            exec:
+              command: ["sh","-c","dig +time=2 +retry=0 @127.0.0.1 pi.hole >/dev/null 2>&1"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command: ["sh","-c","dig +time=2 +retry=0 @127.0.0.1 pi.hole >/dev/null 2>&1"]
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 10
+          volumeMounts:
+            - name: etc
+              mountPath: /etc/pihole
+              readOnly: false
+            - name: custom-dnsmasq
+              mountPath: /etc/dnsmasq.d/02-custom.conf
+              subPath: 02-custom.conf
+            - name: custom-dnsmasq
+              mountPath: /etc/addn-hosts
+              subPath: addn-hosts
+          securityContext:
+            privileged: false
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          {{- range .Values.dnsConfig.nameservers }}
+          - {{ . }}
+          {{- end }}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: etc
+{{- if and .Values.persistence.enabled .Values.persistence.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim }}
+{{- else if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.claimName }}
+{{- else }}
+          emptyDir: {}
+{{- end }}
+        - name: custom-dnsmasq
+          configMap:
+            name: {{ default (include "pihole.fullname" .) .Values.configmap.nameOverride }}-dnsmasq
+            defaultMode: 420

@@ -1,0 +1,17 @@
+Pi-hole is deploying as {{ include "pihole.fullname" . }} in {{ .Values.namespace }}.
+
+Service:
+  Type: {{ .Values.service.type }}
+  {{- if and (eq .Values.service.type "LoadBalancer") (.Values.service.loadBalancerIP) }}
+  LoadBalancer IP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+
+To open the admin UI:
+  http://<SERVICE_IP_OR_DNS>/
+
+PVC:
+  {{- if .Values.persistence.enabled }}
+  Using claim: {{ .Values.persistence.existingClaim | default .Values.persistence.claimName }}
+  {{- else }}
+  Persistence disabled (using emptyDir)
+  {{- end }}

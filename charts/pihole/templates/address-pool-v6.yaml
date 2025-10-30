@@ -1,8 +1,0 @@
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: homelan-v6
-  namespace: metallb-system
-spec:
-  addresses:
-    - 2001:8e0:2078:c400::200-2001:8e0:2078:c400::2ff   # frei wählbar im /64

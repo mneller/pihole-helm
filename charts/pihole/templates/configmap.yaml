@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ default (include "pihole.fullname" .) .Values.configmap.nameOverride }}-dnsmasq
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "pihole.labels" . | nindent 4 }}
+data:
+{{- range $k, $v := .Values.configmap.data }}
+  {{ $k }}: |-
+{{ $v | indent 4 }}
+{{- end }}
