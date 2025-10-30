@@ -84,7 +84,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: [ "/bin/bash","-c","chmod +x /opt/pihole/hooks/update-adlists.sh && /opt/pihole/hooks/update-adlists.sh" ]
+                command: [ "/bin/bash","-lc","/opt/pihole/hooks/update-adlists.sh || true" ]
       dnsPolicy: None
       dnsConfig:
         nameservers:

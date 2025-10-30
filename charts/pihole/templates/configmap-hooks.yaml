@@ -8,6 +8,15 @@ data:
     #!/usr/bin/env bash
     set -euo pipefail
 
+    if ! command -v sqlite3 >/dev/null 2>&1; then
+      echo "sqlite3 not found; skipping adlist seed."
+      exit 0
+    fi
+    if ! command -v pihole >/dev/null 2>&1; then
+      echo "pihole CLI not found; skipping."
+      exit 0
+    fi
+
     DB="/etc/pihole/gravity.db"
     LISTS_FILE="/opt/pihole/adlists.txt"
     HASH_FILE="/etc/pihole/.adlists.sha"
