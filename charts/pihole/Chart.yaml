@@ -2,5 +2,5 @@ apiVersion: v2
 name: pihole
 description: Pi-hole on Kubernetes (MicroK8s-ready)
 type: application
-version: 5.1.0
+version: 5.1.1
 appVersion: "2024.07.0"
