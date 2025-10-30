@@ -18,6 +18,8 @@ spec:
       maxUnavailable: 1
   template:
     metadata:
+      annotations:
+        checksum/adlists: {{ toYaml .Values.adlists | sha256sum }}
       labels:
         app: {{ include "pihole.fullname" . }}
     spec:
@@ -72,8 +74,17 @@ spec:
             - name: custom-dnsmasq
               mountPath: /etc/addn-hosts
               subPath: addn-hosts
+            - name: adlists
+              mountPath: /opt/pihole/adlists.txt
+              subPath: adlists.txt
+            - name: hooks
+              mountPath: /opt/pihole/hooks
           securityContext:
             privileged: false
+          lifecycle:
+            postStart:
+              exec:
+                command: [ "/bin/bash","-c","chmod +x /opt/pihole/hooks/update-adlists.sh && /opt/pihole/hooks/update-adlists.sh" ]
       dnsPolicy: None
       dnsConfig:
         nameservers:
@@ -96,3 +107,10 @@ spec:
           configMap:
             name: {{ default (include "pihole.fullname" .) .Values.configmap.nameOverride }}-dnsmasq
             defaultMode: 420
+        - name: adlists
+          configMap:
+            name: {{ include "pihole.fullname" . }}-adlists
+        - name: hooks
+          configMap:
+            name: {{ include "pihole.fullname" . }}-hooks
+            defaultMode: 0555

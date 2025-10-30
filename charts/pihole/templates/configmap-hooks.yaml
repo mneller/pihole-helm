@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "pihole.fullname" . }}-hooks
+  namespace: {{ .Values.namespace }}
+data:
+  update-adlists.sh: |
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    DB="/etc/pihole/gravity.db"
+    LISTS_FILE="/opt/pihole/adlists.txt"
+    HASH_FILE="/etc/pihole/.adlists.sha"
+
+    if ! [ -s "$LISTS_FILE" ]; then
+      echo "No adlists file present or empty; nothing to do."
+      exit 0
+    fi
+
+    current_hash="$(sha256sum "$LISTS_FILE" | awk '{print $1}')"
+    prev_hash="$(cat "$HASH_FILE" 2>/dev/null || true)"
+
+    if [ "${current_hash:-}" = "${prev_hash:-}" ]; then
+      echo "Adlists unchanged (hash=${current_hash}); skipping DB update and pihole -g."
+      exit 0
+    fi
+
+    echo "Adlists changed: ${prev_hash:-<none>} -> ${current_hash}"
+    echo "Waiting for gravity.db to be ready..."
+    for i in {1..60}; do
+      if [ -f "$DB" ] && sqlite3 "$DB" ".tables" | grep -q 'adlist'; then
+        break
+      fi
+      sleep 2
+    done
+
+    if ! [ -f "$DB" ]; then
+      echo "gravity.db not found; Pi-hole may still be initializing. Will try to trigger pihole -g anyway."
+    fi
+
+    # Optional: safer on NFS
+    sqlite3 "$DB" 'PRAGMA journal_mode=DELETE; PRAGMA synchronous=NORMAL;' >/dev/null 2>&1 || true
+
+    echo "Upserting adlists into gravity.db ..."
+    while IFS= read -r u; do
+      [ -z "$u" ] && continue
+      comment="Helm-adlist $(basename "$u")"
+      sqlite3 "$DB" <<'SQL' || true
+  BEGIN;
+  INSERT OR IGNORE INTO adlist (address, enabled, comment)
+  VALUES ('$u', 1, '$comment');
+  INSERT OR IGNORE INTO adlist_by_group (adlist_id, group_id)
+  SELECT id, 0 FROM adlist WHERE address = '$u';
+  COMMIT;
+  SQL
+echo "✔ ensured: $u"
+  done < "$LISTS_FILE"
+
+  echo "Running pihole -g to fetch/apply lists…"
+  if pihole -g; then
+  echo "$current_hash" > "$HASH_FILE"
+  echo "Updated hash saved to $HASH_FILE"
+  else
+  echo "pihole -g failed (non-fatal); keeping previous hash."
+  fi
+
+  echo "Done."

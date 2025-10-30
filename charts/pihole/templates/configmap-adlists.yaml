@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "pihole.fullname" . }}-adlists
+  namespace: {{ .Values.namespace }}
+data:
+  adlists.txt: |
+{{- range $u := .Values.adlists }}
+    {{ $u }}
+{{- end }}
