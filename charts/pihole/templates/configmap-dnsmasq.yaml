@@ -4,15 +4,7 @@ metadata:
   name: {{ include "pihole.fullname" . }}-dnsmasq
   namespace: {{ .Values.namespace }}
 data:
-  02-custom.conf: |
-{{- if .Values.configmap.data."02-custom.conf" }}
-{{ .Values.configmap.data."02-custom.conf" | indent 4 }}
-{{- else }}
-{{- /* empty default */ -}}
-{{- end }}
-  addn-hosts: |
-{{- if .Values.configmap.data."addn-hosts" }}
-{{ .Values.configmap.data."addn-hosts" | indent 4 }}
-{{- else }}
-{{- /* empty default */ -}}
-{{- end }}
+  02-custom.conf: |-
+{{ (index .Values.configmap.data "02-custom.conf" | default "") | nindent 4 }}
+  addn-hosts: |-
+{{ (index .Values.configmap.data "addn-hosts" | default "") | nindent 4 }}
