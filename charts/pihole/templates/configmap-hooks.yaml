@@ -50,10 +50,10 @@ BEGIN;
 INSERT OR IGNORE INTO adlist (address, enabled, comment)
 VALUES ('$u', 1, '$comment');
 INSERT OR IGNORE INTO adlist_by_group (adlist_id, group_id)
-SELECT id, 0 FROM adlist WHERE address = '$u';
+  SELECT id, 0 FROM adlist WHERE address = '$u';
 COMMIT;
 SQL
-echo "✔ ensured: $u"
+    echo "✔ ensured: $u"
   done < "$LISTS_FILE"
 
   echo "Running pihole -g to fetch/apply lists…"
