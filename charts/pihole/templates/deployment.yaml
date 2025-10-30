@@ -86,16 +86,11 @@ spec:
               mountPath: /etc/addn-hosts
               subPath: addn-hosts
             - name: adlists
-              mountPath: /opt/pihole/adlists.txt
-              subPath: adlists.txt
-            - name: hooks
-              mountPath: /opt/pihole/hooks
+              mountPath: /etc/pihole/adlists.list
+              subPath: adlists.list
+              readOnly: true
           securityContext:
             privileged: false
-          lifecycle:
-            postStart:
-              exec:
-                command: [ "/bin/bash","-lc","/opt/pihole/hooks/update-adlists.sh || true" ]
       dnsPolicy: None
       dnsConfig:
         nameservers:
@@ -121,7 +116,3 @@ spec:
         - name: adlists
           configMap:
             name: {{ include "pihole.fullname" . }}-adlists
-        - name: hooks
-          configMap:
-            name: {{ include "pihole.fullname" . }}-hooks
-            defaultMode: 0555
