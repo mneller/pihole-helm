@@ -54,7 +54,7 @@ data:
     while IFS= read -r u; do
       [ -z "$u" ] && continue
       comment="Helm-adlist $(basename "$u")"
-      sqlite3 "$DB" <<'SQL' || true
+      sqlite3 "$DB" <<SQL || true
     BEGIN;
     INSERT OR IGNORE INTO adlist (address, enabled, comment)
     VALUES ('$u', 1, '$comment');
