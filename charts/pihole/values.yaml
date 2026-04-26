@@ -20,12 +20,9 @@ env:
   FTLCONF_dns_upstreams: "8.8.8.8,8.8.4.4"
 
 persistence:
-  enabled: true
-  existingClaim: ""        # if set, this claim will be used and no PVC created
-  claimName: "pihole-v2-etc"
-  storageClassName: "nfs-csi"
-  accessModes: ["ReadWriteOnce"]
-  size: 5Gi
+  hostPath:
+    path: /srv/pihole/etc-pihole
+    type: Directory
 
 configmap:
   nameOverride: ""         # leave empty to use fullname
