@@ -1,7 +1,7 @@
 namespace: pihole
 
 image:
-  repository: ghcr.io/pi-hole/pihole
+  repository: ghcr.io/pihole/pihole
   tag: "2026.04.1"
   pullPolicy: IfNotPresent
 
