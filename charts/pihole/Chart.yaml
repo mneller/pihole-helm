@@ -3,3 +3,4 @@ name: pihole
 description: Pi-hole on Kubernetes (MicroK8s-ready)
 type: application
 version: 6.0.2
+appVersion: "2026.04.1"
