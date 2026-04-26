@@ -3,6 +3,16 @@ entries:
   pihole:
   - apiVersion: v2
     appVersion: 2024.07.0
+    created: "2026-04-26T15:45:06.008184429Z"
+    description: Pi-hole on Kubernetes (MicroK8s-ready)
+    digest: f08efd783bc1d14446b6326beeab1b19e92e628afc3a51f7130adecb2a6176fc
+    name: pihole
+    type: application
+    urls:
+    - https://github.com/mneller/pihole-helm/releases/download/pihole-6.0.0/pihole-6.0.0.tgz
+    version: 6.0.0
+  - apiVersion: v2
+    appVersion: 2024.07.0
     created: "2025-12-18T21:28:46.817061788Z"
     description: Pi-hole on Kubernetes (MicroK8s-ready)
     digest: b8d1687fb58d63a8168a6f4d1fda727c87b1a6f69b7e9d2e126ab940a61ea0a0
@@ -271,4 +281,4 @@ entries:
     urls:
     - https://github.com/mneller/pihole-helm/releases/download/pihole-3.0.5/pihole-3.0.5.tgz
     version: 3.0.5
-generated: "2025-12-18T21:28:46.81732148Z"
+generated: "2026-04-26T15:45:06.008444405Z"
